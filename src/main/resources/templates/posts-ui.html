@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Job Listings UI</title>
+  <!-- Optionally, include a CSS framework like Bootstrap for styling -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body class="container mt-4">
+<h1>Job Listings</h1>
+
+<!-- Search Bar -->
+<form th:action="@{/posts-ui/search}" method="get" class="form-inline mb-4">
+  <input type="text" name="keyword" class="form-control mr-2" placeholder="Search by keyword"
+         th:value="${keyword}">
+  <button type="submit" class="btn btn-primary">Search</button>
+</form>
+
+<!-- Posts List -->
+<div>
+  <h2>Posts</h2>
+  <div th:if="${#lists.isEmpty(posts)}">
+    <p>No posts available.</p>
+  </div>
+  <ul class="list-group mb-4" th:if="${posts}">
+    <li class="list-group-item" th:each="post : ${posts}">
+      <h5 th:text="${post.profile}">Profile</h5>
+      <p th:text="${post.desc}">Description</p>
+      <p><strong>Experience:</strong> <span th:text="${post.exp}">Experience</span></p>
+      <p>
+        <strong>Techs:</strong>
+        <span th:each="tech : ${post.techs}" th:text="${tech} + ' '">Tech</span>
+      </p>
+    </li>
+  </ul>
+</div>
+
+<!-- New Post Form -->
+<div>
+  <h2>Create New Post</h2>
+  <form th:action="@{/posts-ui/add}" method="post">
+    <div class="form-group">
+      <label for="profile">Profile:</label>
+      <input type="text" id="profile" name="profile" class="form-control" required>
+    </div>
+    <div class="form-group">
+      <label for="desc">Description:</label>
+      <input type="text" id="desc" name="desc" class="form-control" required>
+    </div>
+    <div class="form-group">
+      <label for="exp">Experience:</label>
+      <input type="text" id="exp" name="exp" class="form-control" placeholder="e.g., 5+ years" required>
+    </div>
+    <div class="form-group">
+      <label for="techs">Techs (comma-separated):</label>
+      <input type="text" id="techs" name="techs" class="form-control" placeholder="e.g., java, spring, mongodb" required>
+    </div>
+    <button type="submit" class="btn btn-success">Add Post</button>
+  </form>
+</div>
+</body>
+</html>
